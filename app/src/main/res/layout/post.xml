@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/post_border"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp">
+
+    <ImageView
+                android:id="@+id/dongkey"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@mipmap/ic_launcher_round"/>
+
+        <TextView
+                android:id="@+id/postTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="@{Post.Title}"
+                app:layout_constraintStart_toEndOf="@+id/dongkey"
+                app:layout_constraintTop_toTopOf="@+id/dongkey"
+                tools:text="Title"/>
+
+        <TextView
+                android:id="@+id/postCreator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@{Post.Creator}"
+                android:layout_below="@+id/postTitle"
+                app:layout_constraintTop_toBottomOf="@+id/postTitle"
+                app:layout_constraintStart_toStartOf="@+id/postTitle"
+                tools:text="Creator"/>
+
+        <TextView
+                android:id="@+id/postDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@{Post.postDate}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/postCreator"
+                android:layout_marginRight="10dp"
+                tools:text="PostDate"/>
+
+        <TextView
+                android:id="@+id/viewCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginLeft="10dp"
+                android:text="@{String.valueOf(Post.ViewCount)}"
+                app:layout_constraintTop_toTopOf="@+id/postCreator"
+                app:layout_constraintLeft_toRightOf="@+id/postCreator"
+                tools:text="ViewCount"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
