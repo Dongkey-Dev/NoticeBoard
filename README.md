@@ -10,7 +10,8 @@ Android studio / Kotlin를 이용한 게시판 개발.
 
 1. 개발하고자 하는 어플리케이션의 구조도 개발
 
-![Notice%20Board%20460e21e49c984a838830b0df46d2d840/20200520_021013.png](Notice%20Board%20460e21e49c984a838830b0df46d2d840/20200520_021013.png)
+![20200520_021013](https://user-images.githubusercontent.com/57933815/83353913-c0979880-a390-11ea-9b5f-3c64120444f7.png)
+
 
 2. 구조도를 android studio에서 구현
 
