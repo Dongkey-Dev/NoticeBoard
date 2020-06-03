@@ -27,8 +27,9 @@ Android studio / Kotlin를 이용한 게시판 개발.
 
 ![20200603_201300_1](https://user-images.githubusercontent.com/57933815/83630364-abac4680-a5d6-11ea-929a-ab140f9afddf.png)
 
-    덕분에 PHP와 Vim을 많이 공부하게 되었고, 도움도 되었다.
+덕분에 PHP와 Vim을 많이 공부하게 되었고, 도움도 되었다.
 
 ![20200603_201300_2](https://user-images.githubusercontent.com/57933815/83630370-ad760a00-a5d6-11ea-8c4d-c0de19e7ec58.png)
 ![20200603_201300_3](https://user-images.githubusercontent.com/57933815/83630371-ae0ea080-a5d6-11ea-9577-e488f6035db0.png)
+
 DB에 데이터를 삽입이 잘 되는것을 확인할 수 있다.
