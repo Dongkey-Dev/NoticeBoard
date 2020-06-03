@@ -8,7 +8,10 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noticeboard.Adapters.Adapter
 import com.example.noticeboard.Adapters.MainData
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.*
+import java.net.URL
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +30,22 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mRecyclerView.setHasFixedSize(true)
         }
+//    fun fetchJson(){  // connect to webserver
+//        val url = URL("http://dongkeydev.dothome.co.kr/join.php")
+//        val request = Request.Builder().url(url).build()
+//        val client = OkHttpClient()
+//        client.newCall(request).enqueue(object : Callback{
+//            override fun onResponse(call: Call?, response: Response?){
+//                val body = response?.body()?.string()
+//                println("Success to execute request! : $body")
+//
+//                //parsing to Gson
+//
+//                val gson = GsonBuilder().create()
+//                val list = gson.fromJson(body, post::class.java)
+//            }
+//        })
+//    }
 
     fun checkPermission(){
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){

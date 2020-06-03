@@ -13,7 +13,7 @@
         tools:context="LoginActivity">
 
     <EditText
-            android:id="@+id/et_id"
+            android:id="@+id/userID"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
-            android:id="@+id/et_pass"
+            android:id="@+id/password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -42,14 +42,14 @@
             android:selectAllOnFocus="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_id"/>
+            app:layout_constraintTop_toBottomOf="@+id/userID"/>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="50dp"
-            app:layout_constraintTop_toBottomOf="@+id/et_pass">
+            app:layout_constraintTop_toBottomOf="@+id/password">
         <Button
-                android:id="@+id/btn_login"
+                android:id="@+id/login"
                 android:enabled="true"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -58,7 +58,7 @@
                 android:orientation="horizontal"/>
 
         <Button
-                android:id="@+id/btn_register"
+                android:id="@+id/CreateAccountButton"
                 android:enabled="true"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -67,7 +67,6 @@
                 android:orientation="horizontal"/>
 
         <Button
-                android:id="@+id/btn_find"
                 android:enabled="true"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
