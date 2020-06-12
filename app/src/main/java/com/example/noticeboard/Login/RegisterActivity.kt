@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Response
 import com.example.noticeboard.Adapters.Adapter
 import com.example.noticeboard.Adapters.MainData
 import com.example.noticeboard.LoginActivity
@@ -23,18 +22,17 @@ import org.json.JSONObject
 class RegisterActivity : AppCompatActivity() {
     private var et_id: EditText? = null
     private var et_pass: EditText? = null
-    private var et_name: EditText? = null
+    private var et_email: EditText? = null
     private var et_age: EditText? = null
     private var btn_register: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_create_account)
         //아이디값 찾아주기
-        et_id = findViewById(R.id.et_id)
-        et_pass = findViewById(R.id.et_pass)
-        et_name = findViewById(R.id.et_name)
-        et_age = findViewById(R.id.et_age)
+        et_id = findViewById(R.id.userID)
+        et_pass = findViewById(R.id.password)
+        et_email = findViewById(R.id.email)
         //회원가입 버튼 클릭 시 수행
         btn_register = findViewById(R.id.btn_register)
         btn_register.setOnClickListener(object : View.OnClickListener() {

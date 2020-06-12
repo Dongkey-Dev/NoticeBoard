@@ -9,9 +9,34 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noticeboard.Adapters.Adapter
 import com.example.noticeboard.Adapters.MainData
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
+//    val retrofit = Retrofit.Builder().baseUrl("http://dongkeydev.dothome.co.kr/config.php")
+//        .addConverterFactory(GsonConverterFactory.create()).build();
+//
+//    val service = retrofit.create(Retrofit::class.java);
+//    service.listUser()?.enqueue(object : Callback<Array> {
+//
+//        override fun onFailure(call: Call<Array>?, t: Throwable?) {}
+//        override fun onResponse(call: Call<Array>, response: Response<Array>) {
+//            Log.d("Response :: ", response?.body().toString())
+//            var data : Array? = response?.body()
+//            for ( i in data!!){
+//                Log.i("data" , i.toString())
+//            }
+//        }
+//    })
+    interface RetrofitNetwork {
+        @GET("/network")
+        fun listUser() : Call<Array>
+    }
 
     var permission_list = arrayOf(
         android.Manifest.permission.INTERNET

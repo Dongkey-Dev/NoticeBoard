@@ -3,6 +3,7 @@ package com.example.noticeboard
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -11,16 +12,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-//        val btn_post = findViewById<Button>(R.id.posting)
-//        btn_post.setOnClickListener{
-//            val nextIntent = Intent(this, PostingActivity::class.java)
-//            startActivity(nextIntent)
-//        }
-
-        login.setOnClickListener {
-            val nextIntent = Intent(this,MainActivity::class.java )
-            startActivity(nextIntent)
-        }
-
+        val userid = findViewById<TextView>(R.id.et_id);
     }
 }
