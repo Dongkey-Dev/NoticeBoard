@@ -11,64 +11,83 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Response
+import com.android.volley.*
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.noticeboard.Adapters.Adapter
 import com.example.noticeboard.Adapters.MainData
 import com.example.noticeboard.LoginActivity
 import com.example.noticeboard.R
+import com.example.noticeboard.Volley.EndPoints
+import kotlinx.android.synthetic.main.activity_create_account.*
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONException
 import org.json.JSONObject
 
 
-class RegisterActivity : AppCompatActivity() {
-    private var et_id: EditText? = null
-    private var et_pass: EditText? = null
-    private var et_name: EditText? = null
-    private var et_age: EditText? = null
-    private var btn_register: Button? = null
+class RegisterActivity :AppCompatActivity(){
+
+    private var registerUserId: EditText? = null
+    private var registerUserPwd: EditText? = null
+    private var registerEmail: EditText? = null
+    private var queue: RequestQueue? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-        //아이디값 찾아주기
-        et_id = findViewById(R.id.et_id)
-        et_pass = findViewById(R.id.et_pass)
-        et_name = findViewById(R.id.et_name)
-        et_age = findViewById(R.id.et_age)
-        //회원가입 버튼 클릭 시 수행
-        btn_register = findViewById(R.id.btn_register)
-        btn_register.setOnClickListener(object : View.OnClickListener() {
-            fun onClick(view: View?) {
-                val userID = et_id.getText().toString()
-                val userPass = et_id.getText().toString()
-                val userName = et_name.getText().toString()
-                val userAge = et_age.getText().toString().toInt()
-                val responseListener: Response.Listener<String?> = object : Response.Listener<String?>() {
-                    fun onResponse(response: String?) {
-                        try {
-                            val jsonObject = JSONObject(response)
-                            val success = jsonObject.getBoolean("success")
-                            //회원가입 성공시
-                            if (success) {
-                                Toast.makeText(applicationContext, "성공", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                                startActivity(intent)
-                                //회원가입 실패시
-                            } else {
-                                Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
-                                return
-                            }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
-                    }
+        setContentView(R.layout.activity_create_account)
+
+        //getting it from xml
+        registerUserId = register_userId as EditText
+        registerUserPwd = register_Password as EditText
+        registerEmail = register_Email as EditText
+
+        register_btn.setOnClickListener {
+            registUser()
+        }
+    }
+
+    private fun registUser(){
+        Log.d("success" , "start registUser()")
+        val id = registerUserId?.text.toString()
+        val pswd = registerUserPwd?.text.toString()
+        val email = registerEmail?.text.toString()
+
+        val que = Volley.newRequestQueue(this@RegisterActivity)
+        //creating volley string request
+        Log.d("success" , "creating volley string request start")
+        val stringRequest = object : StringRequest(
+            Request.Method.POST, EndPoints.URL_REGIST_USER,
+            Response.Listener<String>() { response ->
+                try {
+                    Log.d("success" , "start try")
+                    //Toast.makeText(applicationContext, obj.getString("message"), Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, response, Toast.LENGTH_SHORT).show()
+                } catch (e : JSONException) {
+                    Log.d("fail" , "registUser() fail")
+                    e.printStackTrace()
+                    Log.d("fail", e.printStackTrace().toString())
                 }
-                //서버로 Volley를 이용해서 요청
-                val registerRequest =
-                    RegisterRequest(userID, userPass, userName, userAge, responseListener)
-                val queue = Volley.newRequestQueue(this@RegisterActivity)
-                queue.add(registerRequest)
+            },
+            object : Response.ErrorListener{
+                override fun onErrorResponse(volleyError: VolleyError) {
+                    Toast.makeText(applicationContext, volleyError.message, Toast.LENGTH_LONG).show()
+                    Log.d("fail" , "onErrorResponse()")
+                }
+            })
+        {
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+//                params.put("id", id)
+//                params.put("pswd", pswd)
+//                params.put("email", email)
+                params["id"] = id
+                params["pswd"] = pswd
+                params["email"] = email
+                Log.d("success" , "start params")
+                return params
             }
-        })
+        }
+        que!!.add(stringRequest!!)
     }
 }
