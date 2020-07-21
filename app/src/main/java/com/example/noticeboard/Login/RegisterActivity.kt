@@ -30,7 +30,6 @@ class RegisterActivity :AppCompatActivity(){
     private var registerUserId: EditText? = null
     private var registerUserPwd: EditText? = null
     private var registerEmail: EditText? = null
-    private var queue: RequestQueue? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +59,6 @@ class RegisterActivity :AppCompatActivity(){
             Response.Listener<String>() { response ->
                 try {
                     Log.d("success" , "start try")
-                    //Toast.makeText(applicationContext, obj.getString("message"), Toast.LENGTH_LONG).show()
                     Toast.makeText(applicationContext, response, Toast.LENGTH_SHORT).show()
                 } catch (e : JSONException) {
                     Log.d("fail" , "registUser() fail")
@@ -78,9 +76,6 @@ class RegisterActivity :AppCompatActivity(){
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
                 val params = HashMap<String, String>()
-//                params.put("id", id)
-//                params.put("pswd", pswd)
-//                params.put("email", email)
                 params["id"] = id
                 params["pswd"] = pswd
                 params["email"] = email

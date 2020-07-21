@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val postlist = generateDummyList(500)
+        val postlist = getPost()
 
         mRecyclerView.adapter = Adapter(postlist)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -41,6 +41,12 @@ class MainActivity : AppCompatActivity() {
                 break
             }
         }
+    }
+    private fun getPost():List<MainData>{
+
+        val list = ArrayList<MainData>()
+
+        return list
     }
 
     private fun generateDummyList(size : Int) : List<MainData> {

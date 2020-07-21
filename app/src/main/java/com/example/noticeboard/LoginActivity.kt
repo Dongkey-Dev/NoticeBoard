@@ -27,15 +27,22 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val registerIntent = Intent(this, RegisterActivity::class.java)
-        btn_register.setOnClickListener { startActivity(registerIntent) }
+        UserId = et_id as EditText
+        UserPswd = et_pass as EditText
+
+        val REGISTER_ACTIVITY_INTENT = Intent(this, RegisterActivity::class.java)
+        btn_register.setOnClickListener { startActivity(REGISTER_ACTIVITY_INTENT) }
 
         btn_login.setOnClickListener { loginUser() }
     }
 
     private fun loginUser(){
+
         UserId = et_id as EditText
         UserPswd = et_pass as EditText
+
+        val id = UserId?.text.toString()
+        val pswd = UserPswd?.text.toString()
 
         var que = Volley.newRequestQueue(this@LoginActivity)
 
@@ -43,12 +50,14 @@ class LoginActivity : AppCompatActivity() {
             Request.Method.POST, EndPoints.URL_LOGIN_USER,
             Response.Listener<String>() { response ->
                 try {
-                    Log.d("success" , "start try")
                     Toast.makeText(applicationContext, response, Toast.LENGTH_SHORT).show()
-                    val ENTER_SERVICE_INTENT = Intent(this, MainActivity::class.java)
-                    startActivity(ENTER_SERVICE_INTENT)
+                    if (response!=null && response.contains("pass")){
+                        val ENTER_SERVICE_INTENT = Intent(this, MainActivity::class.java)
+                        startActivity(ENTER_SERVICE_INTENT)
+                    } else {
+                        Toast.makeText(applicationContext, "wrong user", Toast.LENGTH_SHORT).show()
+                    }
                 } catch (e : Exception) {
-                    Log.d("fail" , "registUser() fail")
                     e.printStackTrace()
                 }
             },
@@ -62,9 +71,9 @@ class LoginActivity : AppCompatActivity() {
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
                 val params = HashMap<String, String>()
-                params["id"] = UserId.toString()
-                params["pswd"] = UserPswd.toString()
-                Log.d("success" , "start params")
+                params["id"] = id
+                params["pswd"] = pswd
+                Log.d("success" , "start params" + params)
                 return params
             }
         }
