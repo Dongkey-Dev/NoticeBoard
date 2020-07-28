@@ -6,7 +6,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
@@ -18,8 +20,11 @@ import com.example.noticeboard.Volley.EndPoints
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.post.*
+import kotlinx.android.synthetic.main.post_list.*
 import org.json.JSONArray
+import org.json.JSONObject
 import java.lang.Exception
+import java.util.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,26 +35,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val receviedIntent : Intent = getIntent()
+        main_id.setText(receviedIntent.getStringExtra("user_id"))
+        Log.d("main_id",receviedIntent.getStringExtra("user_id"))
+        val profileImg : Int = receviedIntent.getIntExtra("profileImage", 0)
+        if (profileImg!=0){
+            profileImage.setImageResource(profileImg)
+        }else {
+            profileImage.setImageDrawable(R.id.dongkey.toDrawable())
+        }
         getPost() //Start get Post from php server
 
         val POST_DETAIL = Intent(this, DetailPostActivity::class.java)
-        postlayout.setOnClickListener { startActivity(POST_DETAIL) }
+//        postList.setOnClickListener { startActivity(POST_DETAIL) }
         }
 
-    fun checkPermission(){
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
-            return;
-        }
-        for (permission : String in permission_list){
-
-            var chk = checkCallingOrSelfPermission(permission)
-
-            if(chk == PackageManager.PERMISSION_DENIED){
-                requestPermissions(permission_list, 0)
-                break
-            }
-        }
-    }
     private fun connectPost(j : String):List<Post>{
         val sizejson = JSONArray(j)
         val list = ArrayList<Post>()
@@ -138,6 +139,20 @@ class MainActivity : AppCompatActivity() {
                 Log.d("testGrantResult","${idx} is Granted")
             } else {
                 Log.d("testGrantResult","${idx} is not allowed")
+            }
+        }
+    }
+    fun checkPermission(){
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            return;
+        }
+        for (permission : String in permission_list){
+
+            var chk = checkCallingOrSelfPermission(permission)
+
+            if(chk == PackageManager.PERMISSION_DENIED){
+                requestPermissions(permission_list, 0)
+                break
             }
         }
     }

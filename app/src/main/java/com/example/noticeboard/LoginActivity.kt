@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.android.volley.AuthFailureError
@@ -16,6 +15,7 @@ import com.android.volley.toolbox.Volley
 import com.example.noticeboard.Login.RegisterActivity
 import com.example.noticeboard.Volley.EndPoints
 import kotlinx.android.synthetic.main.activity_login.*
+import org.json.JSONObject
 import java.util.*
 
 class LoginActivity : AppCompatActivity() {
@@ -50,9 +50,17 @@ class LoginActivity : AppCompatActivity() {
             Request.Method.POST, EndPoints.URL_LOGIN_USER,
             Response.Listener<String>() { response ->
                 try {
-                    Toast.makeText(applicationContext, response, Toast.LENGTH_SHORT).show()
-                    if (response!=null && response.contains("pass")){
+                    val res = JSONObject(response)
+                    val boolean_res : Boolean = response!=null&&res.getString("login_result")=="pass"
+                    Toast.makeText(applicationContext, res.getString("login_result"), Toast.LENGTH_SHORT).show()
+                    if (response!=null && res.getString("login_result") == "pass"){
                         val ENTER_SERVICE_INTENT = Intent(this, MainActivity::class.java)
+                        ENTER_SERVICE_INTENT.putExtra("user_id",res.getString("user_id"))
+                        try{
+                            ENTER_SERVICE_INTENT.putExtra("profileImage", res.getInt("profileImage"))
+                        } catch (e: Exception){
+                            e.printStackTrace()
+                        }
                         startActivity(ENTER_SERVICE_INTENT)
                     } else {
                         Toast.makeText(applicationContext, "wrong user", Toast.LENGTH_SHORT).show()

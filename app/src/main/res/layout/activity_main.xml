@@ -5,15 +5,53 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
-    <LinearLayout
+
+    <RelativeLayout
             android:id="@+id/mainMenu"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_margin="8dp">
 
-    </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content">
+
+
+                <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:id="@+id/profileImage"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_alignParentLeft="true"/>
+
+                <TextView
+                        android:id="@+id/main_id"
+                        android:text="@string/user_ID"
+                        android:autoSizeTextType="uniform"
+                        android:layout_height="60dp"
+                        android:layout_width="120dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_below="@+id/profileImage"
+                        android:layout_above="@+id/newPosting"
+                        android:layout_alignParentLeft="true"    />
+        </LinearLayout>
+
+        <Button
+                android:text="Writting"
+                android:autoSizeTextType="uniform"
+                android:id="@+id/newPosting"
+                android:layout_height="50dp"
+                android:layout_width="120dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"/>
+
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mRecyclerView"
