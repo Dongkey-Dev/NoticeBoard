@@ -1,15 +1,25 @@
 package com.example.noticeboard
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.*
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.noticeboard.Adapters.Adapter
 import com.example.noticeboard.Adapters.MainData
+import com.example.noticeboard.Login.RegisterActivity
+import com.example.noticeboard.Volley.EndPoints
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.jar.Manifest
+import kotlinx.android.synthetic.main.post.*
+import org.json.JSONArray
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,12 +30,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        getPost() //Start get Post from php server
 
-        val postlist = getPost()
-
-        mRecyclerView.adapter = Adapter(postlist)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mRecyclerView.setHasFixedSize(true)
+        val POST_DETAIL = Intent(this, DetailPostActivity::class.java)
+        postlayout.setOnClickListener { startActivity(POST_DETAIL) }
         }
 
     fun checkPermission(){
@@ -42,11 +50,69 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    private fun getPost():List<MainData>{
+    private fun connectPost(j : String):List<Post>{
+        val sizejson = JSONArray(j)
+        val list = ArrayList<Post>()
 
-        val list = ArrayList<MainData>()
+        for (i in 0 until sizejson.length()){
+            val jObject = sizejson.getJSONObject(i)
+            val postid = jObject.getInt("postid")
+            Log.d("postid",postid.toString())
+            val title = jObject.getString("title")
+            Log.d("title",title.toString())
+            val creator = jObject.getString("creator")
+            Log.d("creator",creator.toString())
+            var post_date = jObject.getString("postdate")
+            Log.d("post_date",post_date.toString())
+//            val postday : CharSequence = post_date
+            val postdate = jObject.getString("postdate").toString()
+            Log.d("postdate",postdate.toString())
+            val viewcount = jObject.getInt("viewcount")
+            Log.d("viewcount",viewcount.toString())
+            val postcontent = jObject.getString("postcontents")
+            Log.d("postcontent",postcontent.toString())
+            val photo = jObject.get("photo")
+            val drawable = R.drawable.dongkey
 
+            val item = Post(drawable,postid, title,creator, postdate, viewcount, postcontent)
+            list += item
+        }
         return list
+    }
+    private fun commandSet(input:String){
+
+        Log.d("step1", input)
+        val postlist = connectPost(input)
+        Log.d("step2", "postlist")
+        mRecyclerView.adapter = Adapter(postlist)
+        Log.d("step3", "mRecyclerView 1")
+        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        Log.d("step4", "mRecyclerView 2")
+        mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        mRecyclerView.setHasFixedSize(true)
+
+    }
+    private fun getPost(){//List<MainData>{
+
+        var result: String = ""
+        val que = Volley.newRequestQueue(this@MainActivity)
+        val stringRequest = object : StringRequest(
+            Request.Method.GET, EndPoints.URL_GET_POST, Response.Listener<String>() { response ->
+                try {
+                    commandSet(response)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            },
+            object : Response.ErrorListener {
+                override fun onErrorResponse(volleyError: VolleyError) {
+                    Toast.makeText(applicationContext, volleyError.message, Toast.LENGTH_LONG).show()
+                    Log.d("fail", "onErrorResponse()")
+                }
+            })
+        {}
+        que!!.add(stringRequest!!)
     }
 
     private fun generateDummyList(size : Int) : List<MainData> {

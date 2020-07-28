@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.noticeboard.Post
 import com.example.noticeboard.R
 import kotlinx.android.synthetic.main.post.view.*
 
-class Adapter(private  val postlist: List<MainData>) : RecyclerView.Adapter<Adapter.ViewHolder>(){
+class Adapter(private  val postlist: List<Post>) : RecyclerView.Adapter<Adapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_list, parent, false)
@@ -25,11 +26,10 @@ class Adapter(private  val postlist: List<MainData>) : RecyclerView.Adapter<Adap
         holder.post_Title.text = currentPost.Title
         holder.post_Creator.text = currentPost.Creator
         holder.post_ViewCount.text = currentPost.ViewCount.toString()
-        holder.post_date.text = currentPost.PostDate
-
-        if (position == 0) {
-            holder.post_Title.setBackgroundColor(Color.YELLOW)
-        }
+        holder.post_date.text = currentPost.PostDate.toString()
+//        if (position == 0) {
+//            holder.post_Title.setBackgroundColor(Color.YELLOW)
+//        }
     }
 
     override fun getItemCount() = postlist.size
