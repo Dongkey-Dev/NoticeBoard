@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
         val receviedIntent : Intent = getIntent()
         main_id.setText(receviedIntent.getStringExtra("user_id"))
-        Log.d("main_id",receviedIntent.getStringExtra("user_id"))
         val profileImg : Int = receviedIntent.getIntExtra("profileImage", 0)
         if (profileImg!=0){
             profileImage.setImageResource(profileImg)
@@ -49,7 +48,11 @@ class MainActivity : AppCompatActivity() {
 
         val POST_DETAIL = Intent(this, DetailPostActivity::class.java)
 //        postList.setOnClickListener { startActivity(POST_DETAIL) }
-        }
+
+        val POSTING = Intent(this, PostingActivity::class.java)
+        POSTING.putExtra("Creator", receviedIntent.getStringExtra("user_id"))
+        newPosting.setOnClickListener{ startActivity(POSTING)}
+    }
 
     private fun connectPost(j : String):List<Post>{
         val sizejson = JSONArray(j)

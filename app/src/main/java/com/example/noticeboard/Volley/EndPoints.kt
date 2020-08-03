@@ -5,4 +5,5 @@ object EndPoints {
     val URL_REGIST_USER = URL_ROOT + "join.php"
     val URL_LOGIN_USER= URL_ROOT + "test2_login.php"
     val URL_GET_POST = URL_ROOT + "get_post.php"
+    val URL_POSTING = URL_ROOT + "posting.php"
 }
