@@ -6,10 +6,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -53,6 +55,9 @@ class MainActivity : AppCompatActivity() {
         POSTING.putExtra("Creator", receviedIntent.getStringExtra("user_id"))
         newPosting.setOnClickListener{ startActivity(POSTING)}
     }
+    public fun setDetailPost(c:String,t:String,d:String){
+
+    }
 
     private fun connectPost(j : String):List<Post>{
         val sizejson = JSONArray(j)
@@ -93,13 +98,9 @@ class MainActivity : AppCompatActivity() {
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         Log.d("step4", "mRecyclerView 2")
         mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mRecyclerView.setHasFixedSize(true)
-
     }
-    private fun getPost(){//List<MainData>{
+    private fun getPost(){
 
-        var result: String = ""
         val que = Volley.newRequestQueue(this@MainActivity)
         val stringRequest = object : StringRequest(
             Request.Method.GET, EndPoints.URL_GET_POST, Response.Listener<String>() { response ->

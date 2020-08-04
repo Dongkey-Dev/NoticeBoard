@@ -1,5 +1,6 @@
 //package com.example.noticeboard.Volley
 //
+//import android.content.Context
 //import android.content.Intent
 //import android.util.Log
 //import android.widget.Toast
@@ -12,10 +13,13 @@
 //
 //class ExecuteVolley : {
 //
-//    private fun ExecuteVolley(url : String ,  input : String ) : Any{
+//    private fun ExecuteVolley(url : String ,  input : String , c : Context) : Any{
 //
+//        val context : Context = c
+//
+//        val que = Volley.newRequestQueue(context)
 //        var stringRequest = object : StringRequest(
-//            Request.Method.POST, url,
+//            Request.Method.GET, url,
 //            Response.Listener<String>() { response ->
 //                try {
 //                        return response
