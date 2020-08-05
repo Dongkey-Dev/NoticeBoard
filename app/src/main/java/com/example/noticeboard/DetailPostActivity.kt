@@ -43,17 +43,18 @@ class DetailPostActivity : AppCompatActivity() {
         val creator  = receivedINTENT.getStringExtra("Creator")
         val title  = receivedINTENT.getStringExtra("Title")
         val time_stamp  = receivedINTENT.getStringExtra("Date")
+        val option = receivedINTENT.getStringExtra("option")
 
-        Log.d("creator, title, time_stamp of received intent ", creator + title + time_stamp)
+        Log.d("creator, title, time_stamp of received intent ", creator + title + time_stamp +"/option:" +option)
 
-        getPostDetail(creator,title,time_stamp)
+        getPostDetail(creator,title,time_stamp,option)
         article_creator.setText(creator)
         article_postdate.setText(time_stamp)
         article_title.setText(title)
 
     }
 
-    private fun getPostDetail(C:String?, T:String?, TS:String?){
+    private fun getPostDetail(C:String?, T:String?, TS:String?, OP:String?){
 
         article_title.setText(T)
         article_postdate.setText(TS)
@@ -68,6 +69,15 @@ class DetailPostActivity : AppCompatActivity() {
                     Log.d("print response", response)
                     val resJSON = JSONObject(response)
                     article_body.setText(resJSON.getString("postcontents"))
+                    if (OP == "modify"){
+                        val MODIFY_INTENT = Intent(this,PostingActivity::class.java )
+                        MODIFY_INTENT.putExtra("creator", C)
+                        MODIFY_INTENT.putExtra("title", T)
+                        MODIFY_INTENT.putExtra("postdate", TS)
+                        MODIFY_INTENT.putExtra("postcontents", resJSON.getString("postcontents"))
+                        MODIFY_INTENT.putExtra("option", OP)
+                        startActivity(MODIFY_INTENT)
+                    }
                 } catch (e : Exception) {
                     e.printStackTrace()
                 }

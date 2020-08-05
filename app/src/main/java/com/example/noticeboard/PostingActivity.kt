@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_posting.*
 import org.json.JSONObject
 import java.util.HashMap
 
-class PostingActivity : AppCompatActivity() {
+class PostingActivity: AppCompatActivity() {
 
     private var PostingTitle : EditText? = null
     private var PostingContents : EditText? = null
@@ -28,19 +29,39 @@ class PostingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posting)
-        val receviedIntent : Intent = getIntent()
+        val receviedIntent: Intent = getIntent()
 
-        PostingTitle = postingTitle as EditText
-        PostingContents = postingContents as EditText
-        PostCreator = receviedIntent.getStringExtra("Creator")
+        if (receviedIntent.getStringExtra("option") == "modify") {
+            postingTitle.setText(receviedIntent.getStringExtra("title"))
+            postingContents.setText(receviedIntent.getStringExtra("contents"))
+        }
+            PostingTitle = postingTitle as EditText
+            PostingContents = postingContents as EditText
+            PostCreator = receviedIntent.getStringExtra("Creator")
 
-        btnUpdatePosting.setOnClickListener{update_posting(PostingTitle,PostCreator, PostingContents, PostingImgSrc)}
-    }
+            btnUpdatePosting.setOnClickListener {
+                update_posting(
+                    PostingTitle,
+                    PostCreator,
+                    PostingContents,
+                    PostingImgSrc,
+                    receviedIntent.getStringExtra("option"),
+                    receviedIntent.getStringExtra("title"),
+                    receviedIntent.getStringExtra("postdate")
+                )
+            }
+        }
 
-    fun update_posting( title : EditText?, creator:String?, contents : EditText?, imgsrc : EditText?){
+    fun update_posting( title : EditText?, creator:String?,
+                        contents : EditText?, imgsrc : EditText?,
+                        option : String?, old_title : String? = null, old_postdate : String? = null){
+
         val Title = title?.text.toString()
         val Contents = contents?.text.toString()
         val Creator= creator.toString()
+        val Option = option.toString()
+        val o_title = old_title.toString()
+        val o_postdate = old_postdate.toString()
 
         var que= Volley.newRequestQueue(this@PostingActivity)
 
@@ -79,6 +100,9 @@ class PostingActivity : AppCompatActivity() {
                 params["title"] = Title
                 params["creator"] = Creator
                 params["postcontents"] = Contents
+                params["option"] = Option
+                params["old_title"] = o_title
+                params["old_postdate"] = o_postdate
                 Log.d("success" , "start params" + params)
                 return params
             }

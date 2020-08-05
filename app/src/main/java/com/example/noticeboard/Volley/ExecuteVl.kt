@@ -14,14 +14,14 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
 object ExecuteVl{
-    fun testVolley(context: Context, success: (Boolean) -> Unit, Cre : String, Tit : String, Postdate : String) {
+    fun deletePost(context: Context,URL:String, Cre : String, Tit : String, Postdate : String, success: (Boolean) -> Unit) {
 
         val myJson = JSONObject()
         val requestBody = myJson.toString()
         /* myJson에 아무 데이터도 put 하지 않았기 때문에 requestBody는 "{}" 이다 */
 
-        val testRequest = object : StringRequest(Method.POST, EndPoints.URL_DELETE_POST , Response.Listener { response ->
-            println("Server Response 수신: $response")
+        val Request = object : StringRequest(Method.POST, URL , Response.Listener { response ->
+            Log.d("Server Response:",response)
             success(true)
         }, Response.ErrorListener { error ->
             Log.d("ERROR", "Fail Delete Post Request: $error")
@@ -42,6 +42,6 @@ object ExecuteVl{
             /* getBodyContextType에서는 요청에 포함할 데이터 형식을 지정한다.
              * getBody에서는 요청에 JSON이나 String이 아닌 ByteArray가 필요하므로, 타입을 변경한다. */
         }
-        Volley.newRequestQueue(context).add(testRequest)
+        Volley.newRequestQueue(context).add(Request)
     }
 }
