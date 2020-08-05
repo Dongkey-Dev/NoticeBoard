@@ -69,6 +69,13 @@
                 android:layout_marginLeft="20dp"
                 tools:text="ViewCount"/>
 
+        <ImageButton
+            android:layout_height="30dp"
+            android:layout_width="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:scaleType="fitXY"/>
+
 
     </RelativeLayout>
 

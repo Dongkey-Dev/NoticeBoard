@@ -7,4 +7,5 @@ object EndPoints {
     val URL_GET_POST = URL_ROOT + "get_post.php"
     val URL_POSTING = URL_ROOT + "posting.php"
     val URL_GET_POST_DETAIL_NO_IMG = URL_ROOT + "get_post_detail_no_img.php"
+    val URL_DELETE_POST = URL_ROOT + "delete_post.php"
 }

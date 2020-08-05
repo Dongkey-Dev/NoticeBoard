@@ -1,20 +1,23 @@
 package com.example.noticeboard.Adapters
 
 import android.content.Intent
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noticeboard.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.post.view.*
+import com.example.noticeboard.Volley.ExecuteVolley
+import kotlinx.android.synthetic.main.post.view.postCreator
+import kotlinx.android.synthetic.main.post.view.postDate
+import kotlinx.android.synthetic.main.post.view.postTitle
+import kotlinx.android.synthetic.main.post.view.viewCount
+import java.lang.reflect.Executable
 
-class Adapter(private  val postlist: List<Post>) : RecyclerView.Adapter<Adapter.ViewHolder>(){
+class Adapter(private  val postlist: List<Post>, private  val userid : String?) : RecyclerView.Adapter<Adapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_list, parent, false)
@@ -45,6 +48,27 @@ class Adapter(private  val postlist: List<Post>) : RecyclerView.Adapter<Adapter.
             Log.d("SSS","${position} selected")
             Log.d("sss", holder.post_Title.text.toString() + "" + holder.post_date)
             context.startActivity(DETAIL_POST)
+        }
+
+        holder.itemView.setOnLongClickListener{
+            Log.d("check user same", holder.itemView.postCreator.text.toString() + " " + userid)
+            if (holder.itemView.postCreator.text.toString() == userid ){
+                val popup = PopupMenu(holder.itemView.context, it)
+                popup.inflate(R.menu.menu_main)
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.modify -> {
+
+                        }
+                        R.id.delete -> {
+                            ExecuteVolley
+                        }
+                    }
+                    true
+                }
+                popup.show()
+            }
+            return@setOnLongClickListener true
         }
     }
 

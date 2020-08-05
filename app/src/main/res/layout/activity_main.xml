@@ -27,19 +27,74 @@
                         android:layout_marginRight="10dp"
                         android:layout_alignParentLeft="true"/>
 
-            <TextView
-                    android:text="ID : "
-                    android:textSize="30dp"
-                    android:layout_height="40dp"
-                    android:layout_width="50dp"/>
+            <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical">
 
-                <TextView
-                        android:id="@+id/main_id"
-                        android:text="@string/user_ID"
-                        android:textSize="30dp"
-                        android:layout_height="40dp"
-                        android:layout_width="90dp"
-                        android:layout_alignParentLeft="true"/>
+                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content">
+
+                    <TextView
+                            android:text="ID : "
+                            android:textSize="30dp"
+                            android:layout_height="40dp"
+                            android:layout_width="50dp"/>
+
+                    <TextView
+                            android:id="@+id/main_id"
+                            android:text="@string/user_ID"
+                            android:textSize="30dp"
+                            android:layout_height="40dp"
+                            android:layout_width="90dp"
+                            android:layout_alignParentLeft="true"/>
+
+                </LinearLayout>
+
+                <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp">
+
+                    <CheckBox
+                            android:layout_height="30dp"
+                            android:layout_width="30dp"/>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:text="hmmmm"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content">
+
+                    <CheckBox
+                            android:id="@+id/checkbox_viewMyPost"
+                            android:layout_height="30dp"
+                            android:layout_width="30dp"
+                            android:gravity="bottom"/>
+
+                    <TextView
+                            android:layout_height="30dp"
+                            android:layout_width="wrap_content"
+                            android:text="OnlyMyPost"
+                            android:layout_gravity="top"/>
+
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
 
             <Button
                     android:text="Writting"

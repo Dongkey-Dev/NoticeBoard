@@ -6,25 +6,17 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.noticeboard.Adapters.Adapter
 import com.example.noticeboard.Adapters.MainData
-import com.example.noticeboard.Login.RegisterActivity
 import com.example.noticeboard.Volley.EndPoints
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.post.*
-import kotlinx.android.synthetic.main.post_list.*
 import org.json.JSONArray
-import org.json.JSONObject
 import java.lang.Exception
 import java.util.HashMap
 
@@ -33,29 +25,39 @@ class MainActivity : AppCompatActivity() {
     var permission_list = arrayOf(
         android.Manifest.permission.INTERNET
     )
+    public var USER_ID : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val receviedIntent : Intent = getIntent()
+        USER_ID = receviedIntent.getStringExtra("user_id")
         main_id.setText(receviedIntent.getStringExtra("user_id"))
+
         val profileImg : Int = receviedIntent.getIntExtra("profileImage", 0)
         if (profileImg!=0){
             profileImage.setImageResource(profileImg)
         }else {
             profileImage.setImageDrawable(R.id.dongkey.toDrawable())
         }
+        Thread.sleep(10)
         getPost() //Start get Post from php server
-
-        val POST_DETAIL = Intent(this, DetailPostActivity::class.java)
-//        postList.setOnClickListener { startActivity(POST_DETAIL) }
 
         val POSTING = Intent(this, PostingActivity::class.java)
         POSTING.putExtra("Creator", receviedIntent.getStringExtra("user_id"))
         newPosting.setOnClickListener{ startActivity(POSTING)}
+
+        checkbox_viewMyPost.setOnClickListener{
+
+            if (checkbox_viewMyPost.isChecked()){
+                getPost(true)
+            } else{
+                getPost()
+            }
+        }
     }
-    public fun setDetailPost(c:String,t:String,d:String){
+    private fun ViewOnlyMyPost(){
 
     }
 
@@ -93,18 +95,19 @@ class MainActivity : AppCompatActivity() {
         Log.d("step1", input)
         val postlist = connectPost(input)
         Log.d("step2", "postlist")
-        mRecyclerView.adapter = Adapter(postlist)
+        mRecyclerView.adapter = Adapter(postlist, USER_ID)
         Log.d("step3", "mRecyclerView 1")
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         Log.d("step4", "mRecyclerView 2")
         mRecyclerView.setHasFixedSize(true)
     }
-    private fun getPost(){
+    private fun getPost(ViewOnlyMyPost:Boolean = false){
 
         val que = Volley.newRequestQueue(this@MainActivity)
         val stringRequest = object : StringRequest(
-            Request.Method.GET, EndPoints.URL_GET_POST, Response.Listener<String>() { response ->
+            Request.Method.POST,EndPoints.URL_GET_POST, Response.Listener<String>() { response ->
                 try {
+                    Log.d("ViewOnlyMyPostTest response : ", response)
                     commandSet(response)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -116,22 +119,48 @@ class MainActivity : AppCompatActivity() {
                     Log.d("fail", "onErrorResponse()")
                 }
             })
-        {}
+        {
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params["creator"] = USER_ID.toString()
+                params["viewonlymypost"] =  ViewOnlyMyPost.toString()
+                Log.d("ViewOnlyMyPostTest creator and boolean", USER_ID.toString() + " " + ViewOnlyMyPost.toString())
+                return params
+            }
+        }
         que!!.add(stringRequest!!)
     }
 
-    private fun generateDummyList(size : Int) : List<MainData> {
+    fun deletePost(creator : String?, title : String?, postdate : String?){
 
-        val list = ArrayList<MainData>()
-
-        for (i in 0 until size) {
-            val drawable = R.drawable.dongkey
-
-            val item = MainData(drawable, "리사이클러뷰 테스트 ${i}","동키", "20200526", i, "ㅁㅁㄴㅇ")
-            list += item
+        val que = Volley.newRequestQueue(this@MainActivity)
+        val stringRequest = object : StringRequest(
+            Request.Method.POST,EndPoints.URL_DELETE_POST, Response.Listener<String>() { response ->
+                try {
+                    Toast.makeText(applicationContext, response, Toast.LENGTH_LONG).show()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            },
+            object : Response.ErrorListener {
+                override fun onErrorResponse(volleyError: VolleyError) {
+                    Toast.makeText(applicationContext, volleyError.message, Toast.LENGTH_LONG).show()
+                    Log.d("fail", "onErrorResponse()")
+                }
+            })
+        {
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params["creator"] = creator.toString()
+                params["title"] =  title.toString()
+                params["postdate"] =  postdate.toString()
+                return params
             }
-        return list
         }
+        que!!.add(stringRequest!!)
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
