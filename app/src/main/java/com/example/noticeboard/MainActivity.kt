@@ -13,6 +13,7 @@ import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.noticeboard.Adapters.Adapter
+import com.example.noticeboard.Adapters.Adapter.ViewHolder
 import com.example.noticeboard.Adapters.MainData
 import com.example.noticeboard.Volley.EndPoints
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     )
     public var USER_ID : String? = null
 
+    fun refresh(){
+        getPost()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val receviedIntent : Intent = getIntent()
         USER_ID = receviedIntent.getStringExtra("user_id")
         main_id.setText(receviedIntent.getStringExtra("user_id"))
+        var option = receviedIntent.getStringExtra("option")
 
         val profileImg : Int = receviedIntent.getIntExtra("profileImage", 0)
         if (profileImg!=0){
@@ -57,9 +63,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    private fun ViewOnlyMyPost(){
-
-    }
 
     private fun connectPost(j : String):List<Post>{
         val sizejson = JSONArray(j)
@@ -68,20 +71,12 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until sizejson.length()){
             val jObject = sizejson.getJSONObject(i)
             val postid = jObject.getInt("postid")
-            Log.d("postid",postid.toString())
             val title = jObject.getString("title")
-            Log.d("title",title.toString())
             val creator = jObject.getString("creator")
-            Log.d("creator",creator.toString())
             var post_date = jObject.getString("postdate")
-            Log.d("post_date",post_date.toString())
-//            val postday : CharSequence = post_date
             val postdate = jObject.getString("postdate").toString()
-            Log.d("postdate",postdate.toString())
             val viewcount = jObject.getInt("viewcount")
-            Log.d("viewcount",viewcount.toString())
             val postcontent = jObject.getString("postcontents")
-            Log.d("postcontent",postcontent.toString())
             val photo = jObject.get("photo")
             val drawable = R.drawable.dongkey
 
@@ -91,14 +86,9 @@ class MainActivity : AppCompatActivity() {
         return list
     }
     private fun commandSet(input:String){
-
-        Log.d("step1", input)
         val postlist = connectPost(input)
-        Log.d("step2", "postlist")
         mRecyclerView.adapter = Adapter(postlist, USER_ID)
-        Log.d("step3", "mRecyclerView 1")
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        Log.d("step4", "mRecyclerView 2")
         mRecyclerView.setHasFixedSize(true)
     }
     private fun getPost(ViewOnlyMyPost:Boolean = false){
@@ -107,7 +97,6 @@ class MainActivity : AppCompatActivity() {
         val stringRequest = object : StringRequest(
             Request.Method.POST,EndPoints.URL_GET_POST, Response.Listener<String>() { response ->
                 try {
-                    Log.d("ViewOnlyMyPostTest response : ", response)
                     commandSet(response)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -125,7 +114,6 @@ class MainActivity : AppCompatActivity() {
                 val params = HashMap<String, String>()
                 params["creator"] = USER_ID.toString()
                 params["viewonlymypost"] =  ViewOnlyMyPost.toString()
-                Log.d("ViewOnlyMyPostTest creator and boolean", USER_ID.toString() + " " + ViewOnlyMyPost.toString())
                 return params
             }
         }

@@ -33,7 +33,7 @@ class PostingActivity: AppCompatActivity() {
 
         if (receviedIntent.getStringExtra("option") == "modify") {
             postingTitle.setText(receviedIntent.getStringExtra("title"))
-            postingContents.setText(receviedIntent.getStringExtra("contents"))
+            postingContents.setText(receviedIntent.getStringExtra("postcontents"))
         }
             PostingTitle = postingTitle as EditText
             PostingContents = postingContents as EditText
@@ -47,21 +47,23 @@ class PostingActivity: AppCompatActivity() {
                     PostingImgSrc,
                     receviedIntent.getStringExtra("option"),
                     receviedIntent.getStringExtra("title"),
-                    receviedIntent.getStringExtra("postdate")
+                    receviedIntent.getStringExtra("postdate"),
+                    receviedIntent.getStringExtra("userid")
                 )
             }
         }
 
     fun update_posting( title : EditText?, creator:String?,
                         contents : EditText?, imgsrc : EditText?,
-                        option : String?, old_title : String? = null, old_postdate : String? = null){
+                        option : String?, old_title : String? = null, old_postdate : String? = null, userid : String?){
 
         val Title = title?.text.toString()
         val Contents = contents?.text.toString()
-        val Creator= creator.toString()
+        val userid= userid.toString()
         val Option = option.toString()
         val o_title = old_title.toString()
         val o_postdate = old_postdate.toString()
+        Log.d("Step 6 userid", userid)
 
         var que= Volley.newRequestQueue(this@PostingActivity)
 
@@ -74,9 +76,10 @@ class PostingActivity: AppCompatActivity() {
                     Toast.makeText(applicationContext, res.getString("posting_result"), Toast.LENGTH_SHORT).show()
                     if (response!=null && res.getString("posting_result") == "success"){
                         val ENTER_SERVICE_INTENT = Intent(this, MainActivity::class.java)
-                        ENTER_SERVICE_INTENT.putExtra("user_id", creator)
+                        ENTER_SERVICE_INTENT.putExtra("user_id", userid)
                         try{
                             startActivity( ENTER_SERVICE_INTENT )
+                            finish()
                         } catch (e: Exception){
                             e.printStackTrace()
                         }
@@ -97,8 +100,9 @@ class PostingActivity: AppCompatActivity() {
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
                 val params = HashMap<String, String>()
+                Log.d("userid:", userid)
                 params["title"] = Title
-                params["creator"] = Creator
+                params["creator"] = userid
                 params["postcontents"] = Contents
                 params["option"] = Option
                 params["old_title"] = o_title

@@ -44,22 +44,25 @@ class DetailPostActivity : AppCompatActivity() {
         val title  = receivedINTENT.getStringExtra("Title")
         val time_stamp  = receivedINTENT.getStringExtra("Date")
         val option = receivedINTENT.getStringExtra("option")
+        val userid = receivedINTENT.getStringExtra("userid")
+        Log.d("step 2 userid", userid)
 
         Log.d("creator, title, time_stamp of received intent ", creator + title + time_stamp +"/option:" +option)
 
-        getPostDetail(creator,title,time_stamp,option)
+        getPostDetail(userid,creator,title,time_stamp,option)
         article_creator.setText(creator)
         article_postdate.setText(time_stamp)
         article_title.setText(title)
 
     }
 
-    private fun getPostDetail(C:String?, T:String?, TS:String?, OP:String?){
+    private fun getPostDetail(UserId : String?, C:String?, T:String?, TS:String?, OP:String?){
 
         article_title.setText(T)
         article_postdate.setText(TS)
         article_creator.setText(C)
 
+        Log.d("step 3 userid", UserId)
         var que = Volley.newRequestQueue(this@DetailPostActivity)
 
         val stringRequest = object : StringRequest(
@@ -74,8 +77,10 @@ class DetailPostActivity : AppCompatActivity() {
                         MODIFY_INTENT.putExtra("creator", C)
                         MODIFY_INTENT.putExtra("title", T)
                         MODIFY_INTENT.putExtra("postdate", TS)
-                        MODIFY_INTENT.putExtra("postcontents", resJSON.getString("postcontents"))
+                        MODIFY_INTENT.putExtra("postcontents", resJSON.getString("postcontents").toString())
                         MODIFY_INTENT.putExtra("option", OP)
+                        MODIFY_INTENT.putExtra("userid",UserId )
+                        Log.d("step 4 userid", UserId)
                         startActivity(MODIFY_INTENT)
                     }
                 } catch (e : Exception) {
