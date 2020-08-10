@@ -1,3 +1,5 @@
+2020 08 11 
+
 # ~5월 31일
 
 Android studio / Kotlin를 이용한 게시판 개발.
@@ -110,3 +112,47 @@ join.php(회원가입 php)에서 위 두개의 네모박스 코드를 이용해 
 ToDo : 
 1. Post Detail 구현
 2. 글쓰기 구현
+
+#~7월 27일
+
+Todo 항목을 구현하였다. 현재로선 TextView만을 고려했지만, 추후에 ImageView도 넣을 생각이다.
+
+![20200810_첫번째](https://user-images.githubusercontent.com/57933815/89802093-f82e7800-db6b-11ea-9d11-3cc0a8a3a30c.png)
+
+![20200810_두번쨰 글쓰기](https://user-images.githubusercontent.com/57933815/89802102-fb296880-db6b-11ea-8f7c-7ffef3ef8a09.png)
+
+            
+이미지 업로드 기능을 감안해서 Imagebutton 도 넣었다. DB에 image를 업로드, 업로드할 이미지를 크롭하는 기능을 개발할 생각이다.
+
+Todo : 
+1. 수정 / 삭제 기능 구현
+
+#~8월 1일
+
+수정 / 삭제 기능을 Dialog을 통해 구현하였다.
+
+![20200810_두번째두번째](https://user-images.githubusercontent.com/57933815/89802109-fcf32c00-db6b-11ea-89ab-0a99350bc25e.png)
+
+프로세스는 메인화면의 포스팅을 longClickListener 가 long Click을 감지하면 Diaglog를 호출한다.
+
+![20200810_3번째](https://user-images.githubusercontent.com/57933815/89802178-1dbb8180-db6c-11ea-92f2-61176bbedeb3.png)
+
+
+
+Dialog는 게시된 포스팅의 Creator와 MainActivity의 User_id가 일치할 시에만 Dialog가 호출이 되게끔 하였다.
+
+수정 프로세스는 거기서 Modify 클릭 → DetailPost 호출(기존 포스팅 내용을 조회하기 위해서) → Posting Activity 호출(DetailPost에서 조회된 값을 setText로 저장한다.) → 
+
+수정이 완료되면 다시 업로드 
+
+![20200810_4번째](https://user-images.githubusercontent.com/57933815/89802127-0381a380-db6c-11ea-83e2-4172367ea692.png)
+
+(php에서 옵션값을 조회하여, 옵션값이 modify 라면 update sql 쿼리를 날린다.)
+
+삭제 프로세스는 Dialog가 호출된 포스트의 pk값을 알아내고, delete 쿼리를 날린다음 position 값을 갖고 notifyItemRemoved(position) 메서드를 이용해 View에서 제거한다.
+
+지금까지 개발하면서 느낀점 :
+
+MVC 패턴만 생각하면서 개발하는 와중에 MVP, MVVM 개발 패턴이 있다는걸 알게 되었다.
+
+MVC로 개발을 진행해보니, 새로운 기능이나 아이디어를 추가할때마다 Class간의 의존성이 높아진다. 다음 앱개발은 MVVM 패턴으로 개발하고자 한다.
