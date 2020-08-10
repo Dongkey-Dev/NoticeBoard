@@ -9,6 +9,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -26,11 +28,7 @@ class MainActivity : AppCompatActivity() {
     var permission_list = arrayOf(
         android.Manifest.permission.INTERNET
     )
-    public var USER_ID : String? = null
-
-    fun refresh(){
-        getPost()
-    }
+    var USER_ID : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +85,12 @@ class MainActivity : AppCompatActivity() {
     }
     private fun commandSet(input:String){
         val postlist = connectPost(input)
+
+        val animator: RecyclerView.ItemAnimator = mRecyclerView.getItemAnimator()!!
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
+
         mRecyclerView.adapter = Adapter(postlist, USER_ID)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mRecyclerView.setHasFixedSize(true)

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.noticeboard.Adapters.Adapter.ViewHolder
 import com.example.noticeboard.MainActivity
 import com.example.noticeboard.R
 import com.example.noticeboard.Volley.EndPoints
@@ -22,6 +23,8 @@ class MyDialog(context : Context) {
     private lateinit var btnOK : Button
     private lateinit var btnCancel : Button
     private lateinit var listener : MyDialogOKClickedListener
+    var result : Boolean = false
+
 
     fun start(content : String,userid : String?, postTitle : String?, postDate : String? ) {
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)   //타이틀바 제거
@@ -33,17 +36,20 @@ class MyDialog(context : Context) {
 
         btnOK = dlg.findViewById(R.id.ok)
         btnOK.setOnClickListener {
-                            Log.d("delete step 1, fun deletePost head", "access")
+
                             ExecuteVl.deletePost(dlg.context,
                                 EndPoints.URL_DELETE_POST,userid.toString(),postTitle.toString(),postDate.toString()){
                                 success->
                                 if (success){
                                     Log.d("delete step 4, fun deletePost head", "access")
                                     Toast.makeText(dlg.context, "Post Deleted", Toast.LENGTH_LONG).show()
+                                    falsetotrue()
+
                                 } else {
                                     Toast.makeText(dlg.context, "Delete Fail", Toast.LENGTH_LONG).show()
                                 }
                             }
+            this.result = true
             dlg.dismiss()
         }
 
@@ -54,6 +60,10 @@ class MyDialog(context : Context) {
 
         dlg.show()
     }
+    private fun falsetotrue(){
+        this.result = true
+    }
+
     fun setOnOKClickedListener(listener: (String) -> Unit) {
         this.listener = object: MyDialogOKClickedListener {
             override fun onOKClicked(content: String) {

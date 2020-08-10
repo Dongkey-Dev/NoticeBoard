@@ -44,10 +44,7 @@ class DetailPostActivity : AppCompatActivity() {
         val title  = receivedINTENT.getStringExtra("Title")
         val time_stamp  = receivedINTENT.getStringExtra("Date")
         val option = receivedINTENT.getStringExtra("option")
-        val userid = receivedINTENT.getStringExtra("userid")
-        Log.d("step 2 userid", userid)
-
-        Log.d("creator, title, time_stamp of received intent ", creator + title + time_stamp +"/option:" +option)
+        val userid = receivedINTENT.getStringExtra("Creator")
 
         getPostDetail(userid,creator,title,time_stamp,option)
         article_creator.setText(creator)
@@ -62,7 +59,6 @@ class DetailPostActivity : AppCompatActivity() {
         article_postdate.setText(TS)
         article_creator.setText(C)
 
-        Log.d("step 3 userid", UserId)
         var que = Volley.newRequestQueue(this@DetailPostActivity)
 
         val stringRequest = object : StringRequest(
@@ -79,8 +75,7 @@ class DetailPostActivity : AppCompatActivity() {
                         MODIFY_INTENT.putExtra("postdate", TS)
                         MODIFY_INTENT.putExtra("postcontents", resJSON.getString("postcontents").toString())
                         MODIFY_INTENT.putExtra("option", OP)
-                        MODIFY_INTENT.putExtra("userid",UserId )
-                        Log.d("step 4 userid", UserId)
+                        MODIFY_INTENT.putExtra("Creator",UserId )
                         startActivity(MODIFY_INTENT)
                     }
                 } catch (e : Exception) {

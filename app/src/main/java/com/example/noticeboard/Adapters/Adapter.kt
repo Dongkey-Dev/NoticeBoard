@@ -1,10 +1,6 @@
 package com.example.noticeboard.Adapters
 
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.Intent.getIntent
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,24 +8,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.noticeboard.*
+import androidx.recyclerview.widget.RecyclerView.ItemAnimator
+import androidx.recyclerview.widget.SimpleItemAnimator
+import com.example.noticeboard.DetailPostActivity
 import com.example.noticeboard.Dialog.MyDialog
-import com.example.noticeboard.Volley.EndPoints
-import com.example.noticeboard.Volley.ExecuteVl
-import kotlinx.android.synthetic.main.post.view.postCreator
-import kotlinx.android.synthetic.main.post.view.postDate
-import kotlinx.android.synthetic.main.post.view.postTitle
-import kotlinx.android.synthetic.main.post.view.viewCount
-import kotlinx.android.synthetic.main.post_list.view.*
-import java.lang.reflect.Executable
+import com.example.noticeboard.Post
+import com.example.noticeboard.R
+import kotlinx.android.synthetic.main.post.view.*
+
 
 class Adapter(private  val postlist: List<Post>, private  val userid : String?) : RecyclerView.Adapter<Adapter.ViewHolder>(){
-
-    private var prePostion : Int = -1;
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.post_list, parent, false)
@@ -69,15 +58,18 @@ class Adapter(private  val postlist: List<Post>, private  val userid : String?) 
                     when (item.itemId) {
                         R.id.modify -> {
                             DETAIL_POST.putExtra("option", "modify")
-                            DETAIL_POST.putExtra("userid", userid)
+                            DETAIL_POST.putExtra("Creator", userid)
                             Log.d("step 1 userid",userid)
                             context.startActivity(DETAIL_POST)
                         }
                         R.id.delete -> {
                             val dlg = MyDialog(context)
-                            dlg.setOnOKClickedListener{ content ->
+                            dlg.setOnOKClickedListener {context ->}
+                            kotlin.run {
+                                dlg.start("Are you sure delete post?",userid,holder.itemView.postTitle.text.toString(), holder.itemView.postDate.text.toString())
+                                Log.d("last result2", dlg.result.toString())
+                                notifyItemRemoved(position)
                             }
-                            dlg.start("Are you sure delete post?",userid,holder.itemView.postTitle.text.toString(), holder.itemView.postDate.text.toString())
                         }
                     }
                     true

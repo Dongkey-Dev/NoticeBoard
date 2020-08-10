@@ -48,7 +48,7 @@ class PostingActivity: AppCompatActivity() {
                     receviedIntent.getStringExtra("option"),
                     receviedIntent.getStringExtra("title"),
                     receviedIntent.getStringExtra("postdate"),
-                    receviedIntent.getStringExtra("userid")
+                    receviedIntent.getStringExtra("Creator")
                 )
             }
         }
@@ -63,7 +63,8 @@ class PostingActivity: AppCompatActivity() {
         val Option = option.toString()
         val o_title = old_title.toString()
         val o_postdate = old_postdate.toString()
-        Log.d("Step 6 userid", userid)
+
+        Log.d("modify posting", Title + Contents + userid + Option + o_title + o_postdate)
 
         var que= Volley.newRequestQueue(this@PostingActivity)
 
@@ -76,6 +77,7 @@ class PostingActivity: AppCompatActivity() {
                     Toast.makeText(applicationContext, res.getString("posting_result"), Toast.LENGTH_SHORT).show()
                     if (response!=null && res.getString("posting_result") == "success"){
                         val ENTER_SERVICE_INTENT = Intent(this, MainActivity::class.java)
+                        ENTER_SERVICE_INTENT.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                         ENTER_SERVICE_INTENT.putExtra("user_id", userid)
                         try{
                             startActivity( ENTER_SERVICE_INTENT )
